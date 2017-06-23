@@ -2,6 +2,7 @@ package com.beingjavaguys.dao;
 
 import java.util.List;
 
+import com.beingjavaguys.model.Address;
 import com.beingjavaguys.model.Employee;
 
 public interface DataDao {
@@ -10,4 +11,6 @@ public interface DataDao {
 	public Employee getEntityById(long id) throws Exception;
 	public List<Employee> getEntityList() throws Exception;
 	public boolean deleteEntity(long id) throws Exception;
+	public Address getAddressById(long id) throws Exception;
+	public List<Address> getAddressList() throws Exception;
 }

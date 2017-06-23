@@ -57,11 +57,11 @@
  <bean id="txManager"
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>  <!-- 
-	<jpa:repositories base-package="com.beignjavaguys.provider"
-                      entity-manager-factory-ref="entityManagerFactory"
+	</bean>  
+	<jpa:repositories base-package="com.beignjavaguys.model"
+                      entity-manager-factory-ref="sessionFactory"
                       transaction-manager-ref="transactionManager"/>
- -->
+  
 	<!-- <bean id="persistenceExceptionTranslationPostProcessor"
 		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" /> -->
 

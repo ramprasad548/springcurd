@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       					   http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+						   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+						   http://www.springframework.org/schema/context http://www.springframework.org/schema/task/spring-context.xsd
+						   http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+						   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+						   http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+						   http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+	
+	 <context:annotation-config /> 
+	<context:component-scan base-package="com.beingjavaguys.controller" />   
+	<bean id="dataServices" class="com.beingjavaguys.services.DataServicesImpl"></bean>
+ <jee:jndi-lookup id="alosjndiDataSource"
+                    jndi-name="java:/oscarDS"
+                    expected-type="javax.sql.DataSource" /> 
+                    
+	<!-- <bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/employee_db" />
+		<property name="username" value="root" />F
+		<property name="password" value="root" />
+	</bean> -->
+	
+	<bean id="myEmf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+      <property name="dataSource" ref="alosjndiDataSource" />
+      <property name="packagesToScan" value="com.beingjavaguys.model" />
+      <property name="jpaVendorAdapter">
+         <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+      </property>
+      <property name="jpaProperties">
+         <props>
+          <!--   <prop key="hibernate.hbm2ddl.auto">create-drop</prop> -->
+            <prop key="hibernate.dialect">org.hibernate.dialect.SQLServer2012Dialect</prop>
+         </props>
+      </property>
+   </bean>
+ 
+ <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+      <property name="entityManagerFactory" ref="myEmf" />
+   </bean>
+   <tx:annotation-driven />
+ 
+   <bean id="persistenceExceptionTranslationPostProcessor"
+      class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+ 
+
+	<!--   <bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="alosjndiDataSource" />
+		<property name="annotatedClasses">
+			<list>
+				<value>com.beingjavaguys.model.Employee</value>
+				<value>com.beingjavaguys.model.Address</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.SQLServer2012Dialect</prop>
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+			</props>
+		</property>
+	</bean>   -->
+	<!--  <bean id="entityManagerFactory"
+    class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+    <property name="dataSource" ref="alosjndiDataSource" /> 
+</bean>
+
+ <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>  -->
+	<!-- 
+ <bean id="txManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>  --> <!-- 
+	<jpa:repositories base-package="com.beignjavaguys.provider"
+                      entity-manager-factory-ref="entityManagerFactory"
+                      transaction-manager-ref="transactionManager"/>
+ -->
+	<!-- <bean id="persistenceExceptionTranslationPostProcessor"
+		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" /> -->
+
+	
+<!-- 	<bean id="dataDao" class="com.beingjavaguys.dao.DataDaoImpl"></bean>
+	<bean id="dataServices" class="com.beingjavaguys.services.DataServicesImpl"></bean> -->
+	<bean id="employeeProcessor" class="com.beingjavaguys.processor.EmployeeProcessor"></bean> 
+</beans>

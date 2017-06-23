@@ -12,60 +12,39 @@
 						   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
 						   http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
 						   http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
-	
+						 
 	<context:annotation-config />
-	<aop:aspectj-autoproxy />	
-	<context:component-scan base-package="com.beingjavaguys.controller" />  
-	<mvc:annotation-driven />
-
+<aop:aspectj-autoproxy />
+	<context:component-scan base-package="com.beingjavaguys"/>   
  <jee:jndi-lookup id="alosjndiDataSource"
                     jndi-name="java:/oscarDS"
                     expected-type="javax.sql.DataSource" /> 
-                    
-	<!-- <bean id="dataSource"
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/employee_db" />
-		<property name="username" value="root" />F
-		<property name="password" value="root" />
-	</bean> -->
-
-	<!-- <bean id="sessionFactory"
-		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-		<property name="dataSource" ref="alosjndiDataSource" />
-		<property name="annotatedClasses">
-			<list>
-				<value>com.beingjavaguys.model.Employee</value>
-			</list>
-		</property>
-		<property name="hibernateProperties">
-			<props>
-				<prop key="hibernate.dialect">org.hibernate.dialect.SQLServer2012Dialect</prop>
-				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
-			</props>
-		</property>
-	</bean> -->
-	 <bean id="entityManagerFactory"
-    class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-    <property name="dataSource" ref="alosjndiDataSource" /> 
-</bean>
-
+  
  <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-		<property name="entityManagerFactory" ref="entityManagerFactory" />
-	</bean> 
-	
-<!-- 	<bean id="txManager"
-		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean> -->
-	<jpa:repositories base-package="com.beignjavaguys.provider"
+		<!-- <property name="entityManagerFactory" ref="entityManagerFactory" /> -->
+	</bean>
+
+	<!-- Enable @Transactional Support -->
+	 <tx:annotation-driven transaction-manager="transactionManager"/>
+	 <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
+
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"> 
+		<property name="dataSource" ref="alosjndiDataSource" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+		</property>
+		 <property name="jpaDialect">
+        	<bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
+    	</property>
+	</bean>
+	<jpa:repositories base-package="com.beingjavaguys.model"
                       entity-manager-factory-ref="entityManagerFactory"
                       transaction-manager-ref="transactionManager"/>
-
+	<!-- <bean id="bankLoanAspect" class="com.cs.bank.los.api.aspect.BankLoggingAspect" factory-method="aspectOf" /> -->
+	
+		 
 	<bean id="persistenceExceptionTranslationPostProcessor"
 		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
 
-	<bean id="employeeProcessor" class="com.beingjavaguys.processor.EmployeeProcessor"></bean>
-	<bean id="dataDao" class="com.beingjavaguys.dao.DataDaoImpl"></bean>
-	<bean id="dataServices" class="com.beingjavaguys.services.DataServicesImpl"></bean>
 </beans>

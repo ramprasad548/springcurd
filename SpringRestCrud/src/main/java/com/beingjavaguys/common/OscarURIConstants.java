@@ -26,6 +26,8 @@ public class OscarURIConstants {
 	public static final String GET_OFFER_VARIATIONS_OFFER_CODE="/offer/variations/{code}";
 	public static final String GET_PARTY_OFFERS_PARTY_ID="/party/offers/{partyId}";
 	public static final String GET_PARTY_PROSPECT_OFFER="/part/prospect/offer/{partyId}";
+	public static final String GET_Address="/address/{loginId}";
+	public static final String GET_ADDRESS_LIST="/address";
 	
 	
 	
