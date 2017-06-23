@@ -1,6 +1,7 @@
 package com.beingjavaguys.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -73,4 +74,12 @@ public class Employee implements Serializable {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+	
+	public Employee(long id, String firstName, String lastName, String email, String mobile) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email; 
+	}
+
 }

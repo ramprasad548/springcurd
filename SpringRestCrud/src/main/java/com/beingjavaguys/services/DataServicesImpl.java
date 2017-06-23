@@ -6,11 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.beingjavaguys.dao.DataDao;
 import com.beingjavaguys.model.Employee;
+import com.beingjavaguys.processor.EmployeeProcessor;
 
 public class DataServicesImpl implements DataServices {
 
 	@Autowired
 	DataDao dataDao;
+	@Autowired
+	EmployeeProcessor employeeProcessor;
 	
 	@Override
 	public boolean addEntity(Employee employee) throws Exception {
@@ -19,7 +22,7 @@ public class DataServicesImpl implements DataServices {
 
 	@Override
 	public Employee getEntityById(long id) throws Exception {
-		return dataDao.getEntityById(id);
+		return employeeProcessor.getEmployeeDetailsById(id);
 	}
 
 	@Override
