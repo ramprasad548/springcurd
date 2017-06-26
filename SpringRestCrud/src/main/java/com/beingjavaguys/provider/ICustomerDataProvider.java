@@ -11,6 +11,6 @@ import com.beingjavaguys.model.Address;
 @Repository
 public interface ICustomerDataProvider extends JpaRepository<Address, Serializable> {
 	
-	@Query( " from Party p where p.id=?1")
+	@Query( " from Address")
 	Address findPartyByPartyId(Long partyId);
 }

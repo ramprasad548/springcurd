@@ -12,61 +12,48 @@
 						   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
 						   http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
 						   http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+
+	<jpa:repositories base-package="com.beingjavaguys.provider" ></jpa:repositories>
+
+	<context:annotation-config />
+	<aop:aspectj-autoproxy />
+	<context:load-time-weaver aspectj-weaving="autodetect"/>
+	<context:component-scan base-package="com.beingjavaguys" scoped-proxy="targetClass"/><!-- 
+	<context:component-scan base-package="com.acg.bank.tp"/>	   			 -->
+ 	
+	<!-- Enable @Transactional Support -->
+	<tx:annotation-driven />
+		
+	 <jee:jndi-lookup  id="alosjndiDataSource" jndi-name="java:/MSSQLDS"
+		expected-type="javax.sql.DataSource" /> 
+
+	<mvc:resources mapping="/resources/**" location="/resources/" />
 	
-	<!-- <context:annotation-config />
-	<aop:aspectj-autoproxy />		 -->		  
-	<context:component-scan base-package="com.beingjavaguys.controller" />
-	<mvc:annotation-driven />
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
 
- <jee:jndi-lookup id="alosjndiDataSource"
-                    jndi-name="java:/oscarDS"
-                    expected-type="javax.sql.DataSource" /> 
-                    
-	<!-- <bean id="dataSource"
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/employee_db" />
-		<property name="username" value="root" />F
-		<property name="password" value="root" />
-	</bean> -->
-
-	  <bean id="sessionFactory"
-		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="alosjndiDataSource" />
-		<property name="annotatedClasses">
-			<list>
-				<value>com.beingjavaguys.model.Employee</value>
-			</list>
+		<property name="packagesToScan" value="com.beingjavaguys.model" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
 		</property>
-		<property name="hibernateProperties">
+		<property name="jpaProperties">
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.SQLServer2012Dialect</prop>
-				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				  <!--<prop key="hibernate.show_sql">true</prop>  -->
+				<prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
+				<prop key="hibernate.generate_statistics">true</prop>
 			</props>
 		</property>
-	</bean>  
-	<!--  <bean id="entityManagerFactory"
-    class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-    <property name="dataSource" ref="alosjndiDataSource" /> 
-</bean>
-
- <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+	</bean>
+	 <bean id="bankLoanAspect" class="com.beingjavaguys.aspect.BankLoggingAspect" factory-method="aspectOf" /> 
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
-	</bean>  -->
-	
- <bean id="txManager"
-		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>  
-	<jpa:repositories base-package="com.beignjavaguys.model"
-                      entity-manager-factory-ref="sessionFactory"
-                      transaction-manager-ref="transactionManager"/>
-  
-	<!-- <bean id="persistenceExceptionTranslationPostProcessor"
-		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" /> -->
-
-	
-	<bean id="dataDao" class="com.beingjavaguys.dao.DataDaoImpl"></bean>
-	<bean id="dataServices" class="com.beingjavaguys.services.DataServicesImpl"></bean>
-	<bean id="employeeProcessor" class="com.beingjavaguys.processor.EmployeeProcessor"></bean> 
+	</bean>
+	<bean id="persistenceExceptionTranslationPostProcessor"
+		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
 </beans>
