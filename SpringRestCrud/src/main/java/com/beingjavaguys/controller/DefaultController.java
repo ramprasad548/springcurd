@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.beingjavaguys.common.OscarURIConstants;
 import com.beingjavaguys.common.exception.BankLosBusinessException;
@@ -22,11 +23,14 @@ import com.beingjavaguys.model.Address;
 import com.beingjavaguys.model.Employee;
 import com.beingjavaguys.model.Status;
 import com.beingjavaguys.services.DataServices;
+import com.beingjavaguys.vo.base.BankBaseVO;
+import com.beingjavaguys.vo.base.CountryVOList;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException; 
 
 @RestController
 @Scope("request") 
+@EnableWebMvc
 public class DefaultController {
 
 	@Autowired
@@ -46,7 +50,7 @@ public class DefaultController {
 		}
 
 	}
-	 /**
+	/* *//**
      * This service used to get the party details  by passing the loginId
      * @param loginId
      * @param req
@@ -57,7 +61,7 @@ public class DefaultController {
      * @throws JsonMappingException
      * @throws BankLosException
      * @throws BankLosBusinessException
-     */
+     *//*
 	@RequestMapping(value = OscarURIConstants.GET_PARTY, method = RequestMethod.GET, produces={"application/json"})
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
@@ -66,7 +70,7 @@ public class DefaultController {
 		 return dataServices.getEntityList();
 
 	}
-	
+	*/
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody
 	Employee getEmployee(@PathVariable("id") long id)  {
@@ -122,7 +126,7 @@ public class DefaultController {
 	@RequestMapping(value = OscarURIConstants.GET_Address, method = RequestMethod.GET, produces={"application/json"})
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
-	public  Address getAddressDetailsByLoginId(@PathVariable("id") long id)  throws JsonParseException, JsonMappingException,Exception
+	public  Address getAddressDetailsByLoginId(@PathVariable("loginId") long id)  throws JsonParseException, JsonMappingException,Exception
 	{
 		Address address = dataServices.getAddress(id);
 		
@@ -148,6 +152,36 @@ public class DefaultController {
 	public  List<Address> getAddressList()  throws JsonParseException, JsonMappingException,Exception
 	{
 		 return dataServices.getAddressList();
+
+	}
+	
+	@RequestMapping(value = OscarURIConstants.GET_PARTY, method = RequestMethod.GET, produces={"application/json"})
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	public  BankBaseVO getPartyDetailsByLoginId(@PathVariable("loginId") String loginId)  throws JsonParseException, JsonMappingException, BankLosException, BankLosBusinessException,Exception
+	{
+		logger.debug("Calling Get Party Details by Login Id service");
+		 
+		 return dataServices.getEntityListVO();
+}
+	
+	 /**
+     * This service used to get the party details  by passing the loginId
+     * @param loginId
+     * @param req
+     * @param response
+     * @param ucBuilder
+     * @return
+	 * @throws Exception 
+     * @throws BankLosException
+     * @throws BankLosBusinessException
+     */
+	@RequestMapping(value = OscarURIConstants.GET_COUNTRY, method = RequestMethod.GET, produces={"application/json"})
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	public  CountryVOList getCountryVO()  throws JsonParseException, JsonMappingException,Exception
+	{
+		 return dataServices.getCountryListVO();
 
 	}
 }

@@ -28,6 +28,7 @@ public class OscarURIConstants {
 	public static final String GET_PARTY_PROSPECT_OFFER="/part/prospect/offer/{partyId}";
 	public static final String GET_Address="/address/{loginId}";
 	public static final String GET_ADDRESS_LIST="/address";
+	public static final String GET_COUNTRY="/country";
 	
 	
 	

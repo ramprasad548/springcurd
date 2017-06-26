@@ -77,7 +77,7 @@ public class LoggingListener implements ServletContextListener {
 		try {
 			is = getContextClassLoader().getResourceAsStream(LOG4J);
 			log4jProp.load(is);
-			String baselogs = "c:\\logs\\";
+			String baselogs = "C:\\logs\\";
 			try {
 				Context ctx = new InitialContext();
 				Object o = ctx.lookup("java:comp/env/logs");

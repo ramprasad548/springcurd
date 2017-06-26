@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.beingjavaguys.model.Address;
 import com.beingjavaguys.model.Employee;
 import com.beingjavaguys.processor.EmployeeProcessor;
+import com.beingjavaguys.vo.base.BankBaseVO;
+import com.beingjavaguys.vo.base.CountryVOList;
 
 @Service("dataServices")
 @Scope("request")
@@ -52,4 +54,13 @@ public class DataServicesImpl implements DataServices {
 		return employeeProcessor.getAddressDetails();
 	}
 
+	@Override
+	public BankBaseVO getEntityListVO() throws Exception {
+		return employeeProcessor.getEntityListVO();
+	}
+	
+	@Override
+	public CountryVOList getCountryListVO() throws Exception {
+		return employeeProcessor.getCountryListVO();
+	}
 }

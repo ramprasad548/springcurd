@@ -18,17 +18,24 @@
 	<context:annotation-config />
 	<aop:aspectj-autoproxy />
 	<context:load-time-weaver aspectj-weaving="autodetect"/>
-	<context:component-scan base-package="com.beingjavaguys" scoped-proxy="targetClass"/><!-- 
+	
+	<context:component-scan base-package="com.beingjavaguys"/><!-- 
 	<context:component-scan base-package="com.acg.bank.tp"/>	   			 -->
  	
 	<!-- Enable @Transactional Support -->
 	<tx:annotation-driven />
 		
-	 <jee:jndi-lookup  id="alosjndiDataSource" jndi-name="java:/MSSQLDS"
+	 <jee:jndi-lookup  id="alosjndiDataSource" jndi-name="java:/oscarDS"
 		expected-type="javax.sql.DataSource" /> 
 
 	<mvc:resources mapping="/resources/**" location="/resources/" />
-	
+	<mvc:annotation-driven >
+    <mvc:message-converters>
+        <bean class="org.springframework.http.converter.ResourceHttpMessageConverter"/>
+        <bean class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter"/>
+        <bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>
+    </mvc:message-converters>
+</mvc:annotation-driven>
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/views/" />
 		<property name="suffix" value=".jsp" />
@@ -50,7 +57,7 @@
 			</props>
 		</property>
 	</bean>
-	 <bean id="bankLoanAspect" class="com.beingjavaguys.aspect.BankLoggingAspect" factory-method="aspectOf" /> 
+	<!--  <bean id="bankLoanAspect" class="com.beingjavaguys.aspect.BankLoggingAspect" factory-method="aspectOf" />  -->
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
